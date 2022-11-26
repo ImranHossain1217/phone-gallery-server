@@ -21,6 +21,7 @@ async function run() {
     const categoryCollection = client
       .db("phoneGallery")
       .collection("categories");
+      const bookingCollection = client.db("phoneGallery").collection("bookings");
 
     app.get("/category", async (req, res) => {
       const query = {};
@@ -35,6 +36,13 @@ async function run() {
       const result = await categoryCollection.findOne(query);
       res.send(result);
     });
+
+    app.post('/bookings', async(req,res)=> {
+      const booking = req.body;
+      const result = await bookingCollection.insertOne(booking);
+      res.send(result);
+    });
+    
   } finally {
   }
 }
