@@ -18,10 +18,9 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const categoryCollection = client
-      .db("phoneGallery")
-      .collection("categories");
-      const bookingCollection = client.db("phoneGallery").collection("bookings");
+    const categoryCollection = client.db("phoneGallery").collection("categories");
+    const bookingCollection = client.db("phoneGallery").collection("bookings");
+    const userCollection = client.db("phoneGallery").collection("users");
 
     app.get("/category", async (req, res) => {
       const query = {};
@@ -48,6 +47,12 @@ async function run() {
       const booking = req.body;
       const result = await bookingCollection.insertOne(booking);
       res.send(result);
+    });
+
+    app.post('/users', async(req,res)=> {
+       const user = req.body;
+       const result = await userCollection.insertOne(user);
+       res.send(result);
     });
     
   } finally {
