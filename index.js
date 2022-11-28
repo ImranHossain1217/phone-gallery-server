@@ -40,6 +40,8 @@ async function run() {
       .collection("categories");
     const bookingCollection = client.db("phoneGallery").collection("bookings");
     const userCollection = client.db("phoneGallery").collection("users");
+    const productCollection = client.db("phoneGallery").collection("products");
+    
 
     app.get("/category", async (req, res) => {
       const query = {};
@@ -54,6 +56,20 @@ async function run() {
       const result = await categoryCollection.findOne(query);
       res.send(result);
     });
+
+    app.get('/products',async(req,res)=> {
+       const query = {};
+       const cursor = productCollection.find(query);
+       const product = await cursor.toArray();
+       res.send(product);
+    })
+
+   app.post('/products',async(req,res)=> {
+       const products = req.body;
+       console.log(products);
+       const result = await productCollection.insertOne(products);
+       res.send(result);
+   })
 
     app.get("/bookings", verifyJWT, async (req, res) => {
       const email = req.query.email;
@@ -118,8 +134,8 @@ async function run() {
 
       const updatedDoc = {
         $set: {
-          role: "admin",
-        },
+          role: 'admin'
+        }
       };
       const result = await userCollection.updateOne(
         filter,
