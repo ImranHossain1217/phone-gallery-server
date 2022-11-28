@@ -112,8 +112,8 @@ async function run() {
         return res.status(403).send({ message: "forbidden access" });
       }
 
-      const id = req.params.id
-      const filter = { _id:ObjectId(id) };
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
 
       const updatedDoc = {
@@ -126,6 +126,13 @@ async function run() {
         updatedDoc,
         options
       );
+      res.send(result);
+    });
+
+    app.delete("/users/admin/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
